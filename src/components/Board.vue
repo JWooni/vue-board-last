@@ -3,10 +3,18 @@
     <b-table
       striped
       hover
+      :per-page="perPage"
+      :current-page="currentPage"
       :items="items"
       :fields="fields"
       @row-clicked="rowClick"
     ></b-table>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      align="center"
+    ></b-pagination>
     <b-button @click="writeContent">글쓰기</b-button>
   </div>
 </template>
@@ -28,6 +36,8 @@ export default {
       };
     });
     return {
+      currentPage: 1,
+      perPage: 10,
       fields: [
         {
           key: "content_id",
@@ -48,6 +58,11 @@ export default {
       ],
       items: items
     };
+  },
+  computed: {
+    rows() {
+      return this.items.length;
+    }
   },
   methods: {
     rowClick(item, index, e) {
